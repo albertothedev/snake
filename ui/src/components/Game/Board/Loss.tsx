@@ -59,9 +59,14 @@ const Loss = ({ restartGame, score }: LossProps): JSX.Element => {
   return (
     <div className="loss">
       <h1 className="loss__title">YOU LOST!</h1>
-      <h2 className="loss__info">
-        ENTER YOUR NAME AND SUBMIT YOUR SCORE FOR OTHERS TO SEE
-      </h2>
+      {score >= 5 ? (
+        <h2 className="loss__info">
+          ENTER YOUR NAME AND SUBMIT YOUR SCORE FOR OTHERS TO SEE
+        </h2>
+      ) : (
+        <h2 className="loss__info">DO BETTER TO SUBMIT YOUR SCORE</h2>
+      )}
+
       <form onSubmit={submit} className="loss__submitForm">
         {score >= 5 && (
           <div>
