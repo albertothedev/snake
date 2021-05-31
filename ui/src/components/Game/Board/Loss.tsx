@@ -63,25 +63,27 @@ const Loss = ({ restartGame, score }: LossProps): JSX.Element => {
         ENTER YOUR NAME AND SUBMIT YOUR SCORE FOR OTHERS TO SEE
       </h2>
       <form onSubmit={submit} className="loss__submitForm">
-        <input
-          type="text"
-          maxLength={10}
-          value={value}
-          onChange={handleChange}
-          className="loss__submitForm__usernameInput"
-          name="username"
-        />
         {score >= 5 && (
-          <button
-            type="submit"
-            className={`loss__submitForm__submit ${
-              submitBlinking ? "loss__submitForm__submit--blink" : ""
-            }`}
-            onMouseOver={() => setSubmitBlinking(false)}
-            onMouseOut={() => setSubmitBlinking(true)}
-          >
-            SUBMIT
-          </button>
+          <div>
+            <input
+              type="text"
+              maxLength={10}
+              value={value}
+              onChange={handleChange}
+              className="loss__submitForm__usernameInput"
+              name="username"
+            />
+            <button
+              type="submit"
+              className={`loss__submitForm__submit ${
+                submitBlinking ? "loss__submitForm__submit--blink" : ""
+              }`}
+              onMouseOver={() => setSubmitBlinking(false)}
+              onMouseOut={() => setSubmitBlinking(true)}
+            >
+              SUBMIT
+            </button>
+          </div>
         )}
         <button
           className={`loss__submitForm__restart ${
