@@ -46,7 +46,8 @@ const Leaderboard = (): JSX.Element => {
     }
   }, [dataFetched]);
 
-  const APICall = (e: any) => dispatch(setRequestType(e.target.id.slice(7)));
+  const APICall = (type: "day" | "week" | "month" | "all") =>
+    dispatch(setRequestType(type));
 
   return (
     <div className="leaderboard">
@@ -54,8 +55,7 @@ const Leaderboard = (): JSX.Element => {
       <div className="leaderboard__rankings">
         <div className="leaderboard__rankings__buttons">
           <button
-            onClick={(e) => APICall(e)}
-            id="button-day"
+            onClick={() => APICall("day")}
             className={`leaderboard__rankings__buttons__button${
               requestType === "day"
                 ? " leaderboard__rankings__buttons__button--active"
@@ -65,8 +65,7 @@ const Leaderboard = (): JSX.Element => {
             DAY
           </button>
           <button
-            onClick={(e) => APICall(e)}
-            id="button-week"
+            onClick={() => APICall("week")}
             className={`leaderboard__rankings__buttons__button${
               requestType === "week"
                 ? " leaderboard__rankings__buttons__button--active"
@@ -76,8 +75,7 @@ const Leaderboard = (): JSX.Element => {
             WEEK
           </button>
           <button
-            onClick={(e) => APICall(e)}
-            id="button-month"
+            onClick={() => APICall("month")}
             className={`leaderboard__rankings__buttons__button${
               requestType === "month"
                 ? " leaderboard__rankings__buttons__button--active"
@@ -87,8 +85,7 @@ const Leaderboard = (): JSX.Element => {
             MONTH
           </button>
           <button
-            onClick={(e) => APICall(e)}
-            id="button-all"
+            onClick={() => APICall("all")}
             className={`leaderboard__rankings__buttons__button${
               requestType === "all"
                 ? " leaderboard__rankings__buttons__button--active"
@@ -120,7 +117,7 @@ const Leaderboard = (): JSX.Element => {
               )
             : null}
 
-          {dataFetched && requestType === "all"
+          {dataFetched && requestType === "all" && players
             ? players.map((player: TPlayer, index: number) => (
                 <Player
                   position={index + 1}
