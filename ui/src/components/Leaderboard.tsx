@@ -117,7 +117,7 @@ const Leaderboard = (): JSX.Element => {
               )
             : null}
 
-          {dataFetched && requestType === "all" && players
+          {dataFetched && requestType === "all"
             ? players.map((player: TPlayer, index: number) => (
                 <Player
                   position={index + 1}
