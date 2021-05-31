@@ -1,0 +1,57 @@
+.leaderboard {
+  margin-top: 3vh;
+  margin-left: 3%;
+
+  &__rankings {
+    height: 810px;
+    width: 480px;
+    border: 30px solid $drawingColor;
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    position: relative;
+    font-size: 90%;
+
+    &__buttons {
+      display: flex;
+      font-size: 75%;
+      justify-content: center;
+
+      &__button {
+        padding-right: 12px;
+        padding-left: 12px;
+        color: inherit;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        border-bottom: 5px solid $drawingColor;
+
+        &--active {
+          border-bottom: none !important;
+        }
+      }
+    }
+
+    &__header {
+      display: grid;
+      grid-template-columns: 20% 60% 20%;
+      padding: 5px;
+
+      &__score {
+        text-align: right;
+      }
+    }
+
+    &__players {
+      height: 600px;
+      overflow: auto;
+    }
+
+    &__playerBest {
+      padding: 15px 5px 0px 5px;
+      display: flex;
+      flex-direction: row;
+      position: absolute;
+      bottom: 0;
+    }
+  }
+}

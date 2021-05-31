@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "install": "cd api && npm i && cd ../ui && npm i",
+    "start": "docker-compose -f docker-compose.yml up",
+    "stop": "docker-compose -f docker-compose.yml down --rmi all",
+    "restart": "npm run stop && npm run start"
+  }
+}
