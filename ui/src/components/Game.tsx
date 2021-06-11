@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { useDispatch } from "react-redux";
 
-import Board from "./Game/Board";
 import useInterval from "../utils/useInterval";
 import { TCell, TSnake } from "../types/index";
+import { setDataFetched, setRequestType, setPlayerBest } from "../redux";
 
 const Game = (): JSX.Element => {
+  const dispatch = useDispatch();
+
   const [gameState, setGameState] =
     useState<"waiting" | "playing" | "over">("waiting");
   const [board, setBoard] = useState<Array<TCell>>([]);
@@ -30,6 +34,46 @@ const Game = (): JSX.Element => {
   const setDirection = (data: any) => {
     directionRef.current = data;
     _setDirection(data);
+  };
+
+  const [blinking, setBlinking] = useState<boolean>(true);
+
+  const [value, setValue] = useState<string>("");
+  const [submitBlinking, setSubmitBlinking] = useState<boolean>(true);
+  const [restartBlinking, setRestartBlinking] = useState<boolean>(true);
+
+  useEffect((): void => {
+    if (localStorage.getItem("username"))
+      setValue(localStorage.getItem("username") || "");
+
+    let bestScore: any = localStorage.getItem("playerBest");
+    if (bestScore < snake.length - 5) {
+      localStorage.setItem("playerBest", (snake.length - 5).toString());
+      dispatch(setPlayerBest(snake.length - 5));
+    }
+  }, []);
+
+  const submit = (e: any): void => {
+    e.preventDefault();
+
+    if (snake.length - 5 >= 5 && value !== "") {
+      const data = {
+        username: value,
+        score: snake.length - 5,
+        date: new Date().toJSON().slice(0, -5),
+      };
+
+      axios
+        .post(`${process.env.REACT_APP_SNAKE_API_URL}/addPlayer`, { data })
+        .then((res: AxiosResponse) => {
+          dispatch(setRequestType("day"));
+          dispatch(setDataFetched(false));
+          restartGame("waiting");
+        })
+        .catch((error: AxiosError) => console.error(error));
+
+      localStorage.setItem("username", value);
+    }
   };
 
   useEffect((): void => {
@@ -97,7 +141,6 @@ const Game = (): JSX.Element => {
 
   const moveSnake = (): void => {
     let snakeTemp = { ...snake };
-
     let boardTemp = [...board];
 
     snakeTemp.body.unshift(snakeTemp.head);
@@ -171,7 +214,7 @@ const Game = (): JSX.Element => {
     setSnake(snakeTemp);
   };
 
-  const restartGame = (): void => {
+  const restartGame = (gameState2: "waiting" | "playing" | "over"): void => {
     setDirection({
       previous: null,
       current: "down",
@@ -181,7 +224,7 @@ const Game = (): JSX.Element => {
       body: [],
       length: 5,
     });
-    setGameState("playing");
+    setGameState(gameState2);
   };
 
   return (
@@ -189,13 +232,130 @@ const Game = (): JSX.Element => {
       <div className="game__score">
         SCORE: <span>{snake.length - 5}</span>
       </div>
-      <Board
-        gameState={gameState}
-        setGameState={setGameState}
-        board={board}
-        restartGame={restartGame}
-        score={snake.length - 5}
-      />
+
+      <div className="game__board">
+        {gameState === "waiting" && (
+          <div className="game__board__start">
+            <h1 className="game__board__start__title">SNAKE GAME</h1>
+            <div className="game__board__start__logo">
+              {Array.from(Array(12), (e, i) => (
+                <div
+                  key={i}
+                  className={`game__board__start__logo__cell${
+                    i <= 9 ? " game__board__start__logo__cell--dark" : ""
+                  }${i === 11 ? " game__board__start__logo__cell--food" : ""}`}
+                >
+                  {i === 11 &&
+                    Array.from(Array(9), (e, i) => (
+                      <div
+                        className={`${i % 2 !== 0 ? "dark" : ""}`}
+                        key={i}
+                      ></div>
+                    ))}
+                </div>
+              ))}
+            </div>
+            <h2 className="game__board__start__info">
+              USE WASD OR CONTROL KEYS TO MOVE
+            </h2>
+            <button
+              className={`game__board__start__startButton ${
+                blinking ? "game__board__start__startButton--blink" : ""
+              }`}
+              onClick={() => setGameState("playing")}
+              onMouseOver={() => setBlinking(false)}
+              onMouseOut={() => setBlinking(true)}
+            >
+              START
+            </button>
+          </div>
+        )}
+
+        {gameState === "playing" &&
+          board.map(
+            (
+              cell: {
+                id: string;
+                position: number;
+                hasFood: boolean;
+                hasSnake: boolean;
+              },
+              index: any
+            ) => (
+              <div
+                className={`game__board__cell${
+                  cell.hasSnake ? " game__board__cell--snake" : ""
+                } ${cell.hasFood ? " game__board__cell--food" : ""}`}
+                id={cell.id}
+                key={index}
+              >
+                {cell.hasFood &&
+                  Array.from(Array(9), (e, i) => (
+                    <div
+                      className={`${i % 2 !== 0 ? "dark" : ""}`}
+                      key={i}
+                    ></div>
+                  ))}
+              </div>
+            )
+          )}
+
+        {gameState === "over" && (
+          <div className="game__board__loss">
+            <h1 className="game__board__loss__title">YOU LOST!</h1>
+            {snake.length - 5 >= 5 ? (
+              <h2 className="game__board__loss__info">
+                ENTER YOUR NAME AND SUBMIT YOUR SCORE FOR OTHERS TO SEE
+              </h2>
+            ) : (
+              <h2 className="game__board__loss__info">
+                DO BETTER TO SUBMIT YOUR SCORE
+              </h2>
+            )}
+
+            <form onSubmit={submit} className="game__board__loss__submitForm">
+              {snake.length - 5 >= 5 && (
+                <input
+                  type="text"
+                  maxLength={10}
+                  value={value}
+                  onChange={(e: any) => setValue(e.target.value.toUpperCase())}
+                  className="game__board__loss__submitForm__usernameInput"
+                  name="username"
+                />
+              )}
+
+              {snake.length - 5 >= 5 && (
+                <button
+                  type="submit"
+                  className={`game__board__loss__submitForm__submit ${
+                    submitBlinking
+                      ? "game__board__loss__submitForm__submit--blink"
+                      : ""
+                  }`}
+                  onMouseOver={() => setSubmitBlinking(false)}
+                  onMouseOut={() => setSubmitBlinking(true)}
+                >
+                  SUBMIT
+                </button>
+              )}
+
+              <button
+                className={`game__board__loss__submitForm__restart ${
+                  restartBlinking
+                    ? "game__board__loss__submitForm__restart--blink"
+                    : ""
+                }`}
+                onClick={() => restartGame("playing")}
+                onMouseOver={() => setRestartBlinking(false)}
+                onMouseOut={() => setRestartBlinking(true)}
+              >
+                PLAY AGAIN
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

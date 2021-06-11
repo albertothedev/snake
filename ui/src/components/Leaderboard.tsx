@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 
-import Player from "./Leaderboard/Player";
 import {
   setDataFetched,
   setRequestType,
@@ -51,7 +50,7 @@ const Leaderboard = (): JSX.Element => {
 
   return (
     <div className="leaderboard">
-      <div className="leaderboard__title">LEADERBOARD</div>
+      <div className="leaderboard__title">RANKING</div>
       <div className="leaderboard__rankings">
         <div className="leaderboard__rankings__buttons">
           <button
@@ -103,38 +102,37 @@ const Leaderboard = (): JSX.Element => {
         </div>
 
         <div className="leaderboard__rankings__players">
-          {!dataFetched && <div className="entry">FETCHING DATA...</div>}
-          {dataFetched && requestType !== "all"
-            ? players.map((player: TPlayer, index: number) =>
-                player.date >= sortType[requestType] ? (
-                  <Player
-                    position={index + 1}
-                    name={player.username}
-                    score={player.score}
-                    key={`Player#${index + 1}`}
-                  />
-                ) : null
+          {dataFetched ? (
+            players
+              .filter((player: TPlayer) =>
+                requestType === "all"
+                  ? player
+                  : player.date >= sortType[requestType]
               )
-            : null}
-
-          {dataFetched && requestType === "all"
-            ? players.map((player: TPlayer, index: number) => (
-                <Player
-                  position={index + 1}
-                  name={player.username}
-                  score={player.score}
-                  key={`Player#${index + 1}`}
-                />
+              .map((player: TPlayer, index: number) => (
+                <div
+                  className="leaderboard__rankings__players__player"
+                  key={index}
+                >
+                  <div className="leaderboard__rankings__players__player__position">
+                    {index + 1}
+                  </div>
+                  <div className="leaderboard__rankings__players__player__name">
+                    {player.username}
+                  </div>
+                  <div className="leaderboard__rankings__players__player__score">
+                    {player.score}
+                  </div>
+                </div>
               ))
-            : null}
+          ) : (
+            <span className="entry">FETCHING DATA...</span>
+          )}
         </div>
 
-        <div className="leaderboard__rankings__playerBest">
-          <div>YOUR BEST:&nbsp;</div>
-          <div className="leaderboard__rankings__playerBest__score">
-            {playerBest ? playerBest : 0}
-          </div>
-        </div>
+        <span className="leaderboard__rankings__playerBest">
+          YOUR BEST: {playerBest ? playerBest : 0}
+        </span>
       </div>
     </div>
   );

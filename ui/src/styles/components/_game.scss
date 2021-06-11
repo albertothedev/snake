@@ -1,4 +1,207 @@
 .game {
-  margin-top: 3vh;
-  margin-left: 3%;
+  font-size: 1rem;
+
+  &__score {
+    font-size: 3em;
+  }
+
+  &__board {
+    box-sizing: content-box;
+    aspect-ratio: 8 / 5;
+    border: 3em solid $drawingColor;
+    text-align: center;
+
+    &__start {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+
+      &__title {
+        font-size: 6em;
+        margin: 0;
+        margin-bottom: calc(1em / 3);
+      }
+
+      &__logo {
+        height: 3em;
+        width: 36em;
+        display: flex;
+        margin-bottom: 2em;
+
+        &__cell {
+          width: calc(100% / 12);
+          height: 100%;
+
+          &--dark {
+            background-color: $drawingColor;
+          }
+
+          &--food {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+
+            .dark {
+              background-color: #6b6100;
+            }
+          }
+        }
+      }
+
+      &__info {
+        margin: 0;
+        font-size: 2em;
+        margin-bottom: 1em;
+      }
+
+      &__startButton {
+        border: none;
+        padding: 0;
+        background-color: transparent;
+        cursor: pointer;
+        position: relative;
+        color: $drawingColor;
+        font-size: 3em;
+
+        &:hover {
+          &::before {
+            content: ">";
+            font-weight: 900;
+          }
+
+          &::after {
+            content: "<";
+            font-weight: 900;
+          }
+        }
+
+        &--blink {
+          animation: blinker 1s step-start infinite;
+        }
+      }
+    }
+
+    &__cell {
+      margin: 0;
+      padding: 0;
+      width: calc(100% / 40);
+      height: calc(100% / 25);
+      float: left;
+
+      &--snake {
+        background-color: $drawingColor;
+      }
+
+      &--food {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+
+        .dark {
+          background-color: #6b6100;
+        }
+      }
+    }
+
+    &__loss {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+
+      &__title {
+        font-size: 6em;
+        margin: 0;
+        margin-bottom: calc(1em / 3);
+      }
+
+      &__info {
+        margin: 0;
+        font-size: 2em;
+        margin-bottom: 1em;
+      }
+
+      &__submitForm {
+        &__usernameInput {
+          border: none;
+          color: inherit;
+          padding: 0;
+          background-color: transparent;
+          text-align: center;
+          border-bottom: 0.2em $drawingColor solid;
+          font-size: 2em;
+          width: 15em;
+          margin-bottom: 1em;
+        }
+
+        &__restart {
+          border: none;
+          padding: 0;
+          background-color: transparent;
+          cursor: pointer;
+          position: relative;
+          color: $drawingColor;
+          display: block;
+          margin: auto;
+          font-size: 3em;
+
+          &:hover {
+            &::before {
+              content: ">";
+              font-weight: 900;
+            }
+
+            &::after {
+              content: "<";
+              font-weight: 900;
+            }
+          }
+
+          &--blink {
+            animation: blinker 1s step-start infinite;
+          }
+        }
+
+        &__submit {
+          color: inherit;
+          border: none;
+          padding: 0;
+          background-color: transparent;
+          cursor: pointer;
+          display: block;
+          margin: auto;
+          font-size: 3em;
+          margin-bottom: 0.3em;
+          margin-bottom: calc(1em / 1.5);
+
+          &:hover {
+            &::before {
+              content: ">";
+              font-weight: 900;
+            }
+
+            &::after {
+              content: "<";
+              font-weight: 900;
+            }
+          }
+
+          &--blink {
+            animation: blinker 1s step-start infinite;
+          }
+        }
+      }
+    }
+  }
+
+  @media only screen and (max-width: 1200px) {
+    font-size: 0.7rem;
+  }
+
+  @media only screen and (max-width: 900px) {
+    font-size: 0.5rem;
+  }
 }
