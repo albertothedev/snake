@@ -1,3 +1,7 @@
 /api/node_modules
 /ui/node_modules
 .env.*
+/ui/.env.*
+/api/.env.*
+/api/.env
+/ui/.env
