@@ -9,7 +9,8 @@ import Leaderboard from "./components/Leaderboard";
 import "./styles/main.scss";
 
 const rootElement = document.getElementById("root");
-if (rootElement === null) throw new Error("Root container missing in index.html");
+if (rootElement === null)
+  throw new Error("Root container missing in index.html");
 
 const root = createRoot(rootElement);
 

@@ -9,7 +9,9 @@ import { setDataFetched, setRequestType, setPlayerBest } from "../redux";
 const Game = (): JSX.Element => {
   const dispatch = useDispatch();
 
-  const [gameState, setGameState] = useState<"waiting" | "playing" | "over">("waiting");
+  const [gameState, setGameState] = useState<"waiting" | "playing" | "over">(
+    "waiting"
+  );
   const [board, setBoard] = useState<Array<TCell>>([]);
   const [snake, setSnake] = useState<TSnake>({
     head: 0,
@@ -42,7 +44,8 @@ const Game = (): JSX.Element => {
   const [restartBlinking, setRestartBlinking] = useState<boolean>(true);
 
   useEffect((): void => {
-    if (localStorage.getItem("username")) setValue(localStorage.getItem("username") || "");
+    if (localStorage.getItem("username"))
+      setValue(localStorage.getItem("username") || "");
 
     let bestScore: any = localStorage.getItem("playerBest");
     if (bestScore < snake.length - 5) {
@@ -90,7 +93,8 @@ const Game = (): JSX.Element => {
 
       setBoard(boardTemp);
     }
-    if (gameState === "playing") document.addEventListener("keydown", (e) => keyDown(e), false);
+    if (gameState === "playing")
+      document.addEventListener("keydown", (e) => keyDown(e), false);
   }, [gameState]);
 
   useInterval(() => {
@@ -98,22 +102,38 @@ const Game = (): JSX.Element => {
   }, gameSpeed);
 
   const keyDown = (e: any): void => {
-    if ((e.key === "w" || e.key === "ArrowUp") && directionRef.current.current !== "down" && directionRef.current.current !== "up")
+    if (
+      (e.key === "w" || e.key === "ArrowUp") &&
+      directionRef.current.current !== "down" &&
+      directionRef.current.current !== "up"
+    )
       setDirection({
         previous: directionRef.current.current,
         current: "up",
       });
-    else if ((e.key === "s" || e.key === "ArrowDown") && directionRef.current.current !== "up" && directionRef.current.current !== "down")
+    else if (
+      (e.key === "s" || e.key === "ArrowDown") &&
+      directionRef.current.current !== "up" &&
+      directionRef.current.current !== "down"
+    )
       setDirection({
         previous: directionRef.current.current,
         current: "down",
       });
-    else if ((e.key === "a" || e.key === "ArrowLeft") && directionRef.current.current !== "right" && directionRef.current.current !== "left")
+    else if (
+      (e.key === "a" || e.key === "ArrowLeft") &&
+      directionRef.current.current !== "right" &&
+      directionRef.current.current !== "left"
+    )
       setDirection({
         previous: directionRef.current.current,
         current: "left",
       });
-    else if ((e.key === "d" || e.key === "ArrowRight") && directionRef.current.current !== "left" && directionRef.current.current !== "right")
+    else if (
+      (e.key === "d" || e.key === "ArrowRight") &&
+      directionRef.current.current !== "left" &&
+      directionRef.current.current !== "right"
+    )
       setDirection({
         previous: directionRef.current.current,
         current: "right",
@@ -128,25 +148,38 @@ const Game = (): JSX.Element => {
 
     switch (directionRef.current.current) {
       case "up":
-        if (snakeTemp.head < boardDimensions.columns) return setGameState("over");
+        if (snakeTemp.head < boardDimensions.columns)
+          return setGameState("over");
 
         snakeTemp.head -= boardDimensions.columns;
         break;
 
       case "right":
-        if (((snakeTemp.head + 1) / boardDimensions.columns) % 1 === 0) return setGameState("over");
+        if (((snakeTemp.head + 1) / boardDimensions.columns) % 1 === 0)
+          return setGameState("over");
 
         snakeTemp.head += 1;
         break;
 
       case "down":
-        if (snakeTemp.head >= boardDimensions.rows * boardDimensions.columns - boardDimensions.columns) return setGameState("over");
+        if (
+          snakeTemp.head >=
+          boardDimensions.rows * boardDimensions.columns -
+            boardDimensions.columns
+        )
+          return setGameState("over");
 
         snakeTemp.head += boardDimensions.columns;
         break;
 
       case "left":
-        if (((snakeTemp.head + boardDimensions.columns) / boardDimensions.columns) % 1 === 0) return setGameState("over");
+        if (
+          ((snakeTemp.head + boardDimensions.columns) /
+            boardDimensions.columns) %
+            1 ===
+          0
+        )
+          return setGameState("over");
 
         snakeTemp.head -= 1;
         break;
@@ -168,12 +201,15 @@ const Game = (): JSX.Element => {
 
       let randomCell = boardTemp[Math.floor(Math.random() * boardTemp.length)];
 
-      while (randomCell.hasSnake) randomCell = boardTemp[Math.floor(Math.random() * boardTemp.length)];
+      while (randomCell.hasSnake)
+        randomCell = boardTemp[Math.floor(Math.random() * boardTemp.length)];
 
       randomCell.hasFood = true;
     }
 
-    [snakeTemp.head, snakeTemp.body].flat().forEach((position: number) => (boardTemp[position].hasSnake = true));
+    [snakeTemp.head, snakeTemp.body]
+      .flat()
+      .forEach((position: number) => (boardTemp[position].hasSnake = true));
 
     setBoard(boardTemp);
     setSnake(snakeTemp);
@@ -206,17 +242,27 @@ const Game = (): JSX.Element => {
               {Array.from(Array(12), (e, i) => (
                 <div
                   key={i}
-                  className={`game__board__start__logo__cell${i <= 9 ? " game__board__start__logo__cell--dark" : ""}${
-                    i === 11 ? " game__board__start__logo__cell--food" : ""
-                  }`}
+                  className={`game__board__start__logo__cell${
+                    i <= 9 ? " game__board__start__logo__cell--dark" : ""
+                  }${i === 11 ? " game__board__start__logo__cell--food" : ""}`}
                 >
-                  {i === 11 && Array.from(Array(9), (e, i) => <div className={`${i % 2 !== 0 ? "dark" : ""}`} key={i}></div>)}
+                  {i === 11 &&
+                    Array.from(Array(9), (e, i) => (
+                      <div
+                        className={`${i % 2 !== 0 ? "dark" : ""}`}
+                        key={i}
+                      ></div>
+                    ))}
                 </div>
               ))}
             </div>
-            <h2 className="game__board__start__info">USE WASD OR CONTROL KEYS TO MOVE</h2>
+            <h2 className="game__board__start__info">
+              USE WASD OR CONTROL KEYS TO MOVE
+            </h2>
             <button
-              className={`game__board__start__startButton ${blinking ? "game__board__start__startButton--blink" : ""}`}
+              className={`game__board__start__startButton ${
+                blinking ? "game__board__start__startButton--blink" : ""
+              }`}
               onClick={() => setGameState("playing")}
               onMouseOver={() => setBlinking(false)}
               onMouseOut={() => setBlinking(true)}
@@ -238,11 +284,19 @@ const Game = (): JSX.Element => {
               index: any
             ) => (
               <div
-                className={`game__board__cell${cell.hasSnake ? " game__board__cell--snake" : ""} ${cell.hasFood ? " game__board__cell--food" : ""}`}
+                className={`game__board__cell${
+                  cell.hasSnake ? " game__board__cell--snake" : ""
+                } ${cell.hasFood ? " game__board__cell--food" : ""}`}
                 id={cell.id}
                 key={index}
               >
-                {cell.hasFood && Array.from(Array(9), (e, i) => <div className={`${i % 2 !== 0 ? "dark" : ""}`} key={i}></div>)}
+                {cell.hasFood &&
+                  Array.from(Array(9), (e, i) => (
+                    <div
+                      className={`${i % 2 !== 0 ? "dark" : ""}`}
+                      key={i}
+                    ></div>
+                  ))}
               </div>
             )
           )}
@@ -251,9 +305,13 @@ const Game = (): JSX.Element => {
           <div className="game__board__loss">
             <h1 className="game__board__loss__title">YOU LOST!</h1>
             {snake.length - 5 >= 5 ? (
-              <h2 className="game__board__loss__info">ENTER YOUR NAME AND SUBMIT YOUR SCORE FOR OTHERS TO SEE</h2>
+              <h2 className="game__board__loss__info">
+                ENTER YOUR NAME AND SUBMIT YOUR SCORE FOR OTHERS TO SEE
+              </h2>
             ) : (
-              <h2 className="game__board__loss__info">DO BETTER TO SUBMIT YOUR SCORE</h2>
+              <h2 className="game__board__loss__info">
+                DO BETTER TO SUBMIT YOUR SCORE
+              </h2>
             )}
 
             <form onSubmit={submit} className="game__board__loss__submitForm">
@@ -272,7 +330,11 @@ const Game = (): JSX.Element => {
               {snake.length - 5 >= 5 && (
                 <button
                   type="submit"
-                  className={`game__board__loss__submitForm__submit ${submitBlinking ? "game__board__loss__submitForm__submit--blink" : ""}`}
+                  className={`game__board__loss__submitForm__submit ${
+                    submitBlinking
+                      ? "game__board__loss__submitForm__submit--blink"
+                      : ""
+                  }`}
                   onMouseOver={() => setSubmitBlinking(false)}
                   onMouseOut={() => setSubmitBlinking(true)}
                 >
@@ -281,7 +343,11 @@ const Game = (): JSX.Element => {
               )}
 
               <button
-                className={`game__board__loss__submitForm__restart ${restartBlinking ? "game__board__loss__submitForm__restart--blink" : ""}`}
+                className={`game__board__loss__submitForm__restart ${
+                  restartBlinking
+                    ? "game__board__loss__submitForm__restart--blink"
+                    : ""
+                }`}
                 onClick={() => restartGame("playing")}
                 onMouseOver={() => setRestartBlinking(false)}
                 onMouseOut={() => setRestartBlinking(true)}
