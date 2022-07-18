@@ -22,7 +22,7 @@ Specified in /.env.development.
 
 - **SNAKE_PORT**: Port the backend will run on.
 - **SNAKE_FIREBASE_PRIVATE_KEY**: Firebase private key.
-- **SNAKE_FIREBASE_PROJECT_ID**: Identifer for your Firebase project.
+- **SNAKE_FIREBASE_PROJECT_ID**: Identifier for your Firebase project.
 - **SNAKE_FIREBASE_CLIENT_EMAIL**: Firebase email.
 - **SNAKE_FIREBASE_DATABASE_URL**: Firebase database URL.
 - **REACT_APP_SNAKE_API_URL**: Backend URL.
