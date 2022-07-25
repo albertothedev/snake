@@ -65,7 +65,9 @@ const Game = (): JSX.Element => {
       };
 
       axios
-        .post(`${process.env.REACT_APP_SNAKE_API_URL}/addPlayer`, { data })
+        .post(`/api/addPlayer`, {
+          data,
+        })
         .then((res: AxiosResponse) => {
           dispatch(setRequestType("day"));
           dispatch(setDataFetched(false));

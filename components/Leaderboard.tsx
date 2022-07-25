@@ -36,7 +36,7 @@ const Leaderboard = (): JSX.Element => {
         dispatch(setPlayerBest(Number(localStorage.getItem("playerBest"))));
 
       axios
-        .get(`${process.env.REACT_APP_SNAKE_API_URL}/getPlayers`)
+        .get(`/api/getPlayers`)
         .then((res) => {
           dispatch(setPlayers(res.data));
           dispatch(setDataFetched(true));
