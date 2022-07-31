@@ -43,7 +43,7 @@ const Leaderboard = (): JSX.Element => {
         })
         .catch((error) => console.error(error));
     }
-  }, [dataFetched]);
+  }, [dataFetched, dispatch]);
 
   const APICall = (type: "day" | "week" | "month" | "all") =>
     dispatch(setRequestType(type));

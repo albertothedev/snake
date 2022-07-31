@@ -52,7 +52,7 @@ const Game = (): JSX.Element => {
       localStorage.setItem("playerBest", (snake.length - 5).toString());
       dispatch(setPlayerBest(snake.length - 5));
     }
-  }, []);
+  }, [dispatch, snake]);
 
   const submit = (e: any): void => {
     e.preventDefault();
@@ -80,6 +80,44 @@ const Game = (): JSX.Element => {
   };
 
   useEffect((): void => {
+    const keyDown = (e: any): void => {
+      if (
+        (e.key === "w" || e.key === "ArrowUp") &&
+        directionRef.current.current !== "down" &&
+        directionRef.current.current !== "up"
+      )
+        setDirection({
+          previous: directionRef.current.current,
+          current: "up",
+        });
+      else if (
+        (e.key === "s" || e.key === "ArrowDown") &&
+        directionRef.current.current !== "up" &&
+        directionRef.current.current !== "down"
+      )
+        setDirection({
+          previous: directionRef.current.current,
+          current: "down",
+        });
+      else if (
+        (e.key === "a" || e.key === "ArrowLeft") &&
+        directionRef.current.current !== "right" &&
+        directionRef.current.current !== "left"
+      )
+        setDirection({
+          previous: directionRef.current.current,
+          current: "left",
+        });
+      else if (
+        (e.key === "d" || e.key === "ArrowRight") &&
+        directionRef.current.current !== "left" &&
+        directionRef.current.current !== "right"
+      )
+        setDirection({
+          previous: directionRef.current.current,
+          current: "right",
+        });
+    };
     if (gameState !== "playing") {
       const boardTemp: Array<TCell> = [];
 
@@ -102,45 +140,6 @@ const Game = (): JSX.Element => {
   useInterval(() => {
     if (gameState === "playing") moveSnake();
   }, gameSpeed);
-
-  const keyDown = (e: any): void => {
-    if (
-      (e.key === "w" || e.key === "ArrowUp") &&
-      directionRef.current.current !== "down" &&
-      directionRef.current.current !== "up"
-    )
-      setDirection({
-        previous: directionRef.current.current,
-        current: "up",
-      });
-    else if (
-      (e.key === "s" || e.key === "ArrowDown") &&
-      directionRef.current.current !== "up" &&
-      directionRef.current.current !== "down"
-    )
-      setDirection({
-        previous: directionRef.current.current,
-        current: "down",
-      });
-    else if (
-      (e.key === "a" || e.key === "ArrowLeft") &&
-      directionRef.current.current !== "right" &&
-      directionRef.current.current !== "left"
-    )
-      setDirection({
-        previous: directionRef.current.current,
-        current: "left",
-      });
-    else if (
-      (e.key === "d" || e.key === "ArrowRight") &&
-      directionRef.current.current !== "left" &&
-      directionRef.current.current !== "right"
-    )
-      setDirection({
-        previous: directionRef.current.current,
-        current: "right",
-      });
-  };
 
   const moveSnake = (): void => {
     let snakeTemp = { ...snake };
