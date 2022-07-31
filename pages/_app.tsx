@@ -4,7 +4,7 @@ import "normalize.css";
 import { Provider } from "react-redux";
 import Head from "next/head";
 
-import "../styles/main.scss";
+import "styles/main.scss";
 import store from "../redux";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
