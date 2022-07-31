@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
 
-import useInterval from "../utils/useInterval";
-import { TCell, TSnake } from "../types/index";
+import useInterval from "utils/useInterval";
+import { TCell, TSnake } from "types/index";
 import { setDataFetched, setRequestType, setPlayerBest } from "../redux";
 
 const Game = (): JSX.Element => {

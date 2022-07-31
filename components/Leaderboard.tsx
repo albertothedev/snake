@@ -9,7 +9,7 @@ import {
   RootState,
   setPlayers,
 } from "../redux";
-import { TPlayer } from "../types/index";
+import { TPlayer } from "types/index";
 
 const Leaderboard = (): JSX.Element => {
   const dispatch = useDispatch();

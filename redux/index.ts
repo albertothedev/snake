@@ -1,6 +1,6 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { TPlayer } from "../types/index";
+import { TPlayer } from "types/index";
 
 type TInitialState = {
   dataFetched: boolean;
