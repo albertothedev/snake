@@ -38,6 +38,6 @@ export const { setDataFetched, setPlayerBest, setRequestType, setPlayers } =
 
 const store = configureStore({ reducer: rootSlice.reducer });
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = TInitialState;
 
 export default store;
