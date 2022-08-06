@@ -10,13 +10,19 @@ Snake clone with leaderboard built with Next.js, Typescript, SCSS, Redux, and Fi
    npm i
    ```
 
-2. Copy your Firebase service account JSON file to `./serviceAccountKey.json`.
-
-3. Start a development server:
+2. Start a development server:
 
    ```sh
    npm run dev
    ```
+
+## Environment variables
+
+Specified in ./.env.local.
+
+- **FIREBASE_PROJECT_ID**: Firebase project id.
+- **FIREBASE_CLIENT_EMAIL**: Firebase client email.
+- **FIREBASE_PRIVATE_KEY**: Firebase private key.
 
 ## Other commands
 
