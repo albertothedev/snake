@@ -44,16 +44,13 @@ const Leaderboard = (): JSX.Element => {
     }
   }, [dataFetched, dispatch]);
 
-  const APICall = (type: "day" | "week" | "month" | "all") =>
-    dispatch(setRequestType(type));
-
   return (
     <div className="leaderboard">
       <div className="leaderboard__title">RANKING</div>
       <div className="leaderboard__rankings">
         <div className="leaderboard__rankings__buttons">
           <button
-            onClick={() => APICall("day")}
+            onClick={() => dispatch(setRequestType("day"))}
             className={`leaderboard__rankings__buttons__button${
               requestType === "day"
                 ? " leaderboard__rankings__buttons__button--active"
@@ -63,7 +60,7 @@ const Leaderboard = (): JSX.Element => {
             DAY
           </button>
           <button
-            onClick={() => APICall("week")}
+            onClick={() => dispatch(setRequestType("week"))}
             className={`leaderboard__rankings__buttons__button${
               requestType === "week"
                 ? " leaderboard__rankings__buttons__button--active"
@@ -73,7 +70,7 @@ const Leaderboard = (): JSX.Element => {
             WEEK
           </button>
           <button
-            onClick={() => APICall("month")}
+            onClick={() => dispatch(setRequestType("month"))}
             className={`leaderboard__rankings__buttons__button${
               requestType === "month"
                 ? " leaderboard__rankings__buttons__button--active"
@@ -83,7 +80,7 @@ const Leaderboard = (): JSX.Element => {
             MONTH
           </button>
           <button
-            onClick={() => APICall("all")}
+            onClick={() => dispatch(setRequestType("all"))}
             className={`leaderboard__rankings__buttons__button${
               requestType === "all"
                 ? " leaderboard__rankings__buttons__button--active"
