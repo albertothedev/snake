@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
 
 import useInterval from "utils/useInterval";
-import { setDataFetched, setRequestType, setPlayerBest } from "../redux";
+import { setDataFetched, setRequestType, setPlayerBest } from "redux/index";
 
 const Game = (): JSX.Element => {
   const dispatch = useDispatch();

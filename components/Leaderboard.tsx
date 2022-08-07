@@ -8,7 +8,7 @@ import {
   setPlayerBest,
   RootState,
   setPlayers,
-} from "../redux";
+} from "redux/index";
 
 const Leaderboard = (): JSX.Element => {
   const dispatch = useDispatch();
