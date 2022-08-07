@@ -3,7 +3,6 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
 
 import useInterval from "utils/useInterval";
-import { TCell, TSnake } from "types/index";
 import { setDataFetched, setRequestType, setPlayerBest } from "../redux";
 
 const Game = (): JSX.Element => {
@@ -12,18 +11,24 @@ const Game = (): JSX.Element => {
   const [gameState, setGameState] = useState<"waiting" | "playing" | "over">(
     "waiting"
   );
-  const [board, setBoard] = useState<Array<TCell>>([]);
-  const [snake, setSnake] = useState<TSnake>({
+  const [board, setBoard] = useState<
+    Array<{ id: string; position: number; hasFood: boolean; hasSnake: boolean }>
+  >([]);
+  const [snake, setSnake] = useState<{
+    head: number;
+    body: Array<number>;
+    length: number;
+  }>({
     head: 0,
     body: [],
     length: 5,
   });
   const [direction, _setDirection] = useState<{
-    previous: "up" | "right" | "down" | "left" | null;
-    current: "up" | "right" | "down" | "left";
+    current: "up" | "right" | "down" | "left" | null;
+    new: "up" | "right" | "down" | "left";
   }>({
-    previous: null,
-    current: "down",
+    current: null,
+    new: "down",
   });
   const boardDimensions: { rows: number; columns: number } = {
     rows: 25,
@@ -32,7 +37,10 @@ const Game = (): JSX.Element => {
   const boardCells: number = 1000;
   const gameSpeed: number = 150;
   const directionRef = React.useRef(direction);
-  const setDirection = (data: any) => {
+  const setDirection = (data: {
+    current: "up" | "right" | "down" | "left" | null;
+    new: "up" | "right" | "down" | "left";
+  }) => {
     directionRef.current = data;
     _setDirection(data);
   };
@@ -45,16 +53,18 @@ const Game = (): JSX.Element => {
 
   useEffect((): void => {
     if (localStorage.getItem("username"))
-      setValue(localStorage.getItem("username") || "");
+      setValue(localStorage.getItem("username") as string);
 
-    let bestScore: any = localStorage.getItem("playerBest");
-    if (bestScore < snake.length - 5) {
+    if (
+      Number(localStorage.getItem("playerBest") as string) <
+      snake.length - 5
+    ) {
       localStorage.setItem("playerBest", (snake.length - 5).toString());
       dispatch(setPlayerBest(snake.length - 5));
     }
   }, [dispatch, snake]);
 
-  const submit = (e: any): void => {
+  const submit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
     if (snake.length - 5 >= 5 && value !== "") {
@@ -80,46 +90,46 @@ const Game = (): JSX.Element => {
   };
 
   useEffect((): void => {
-    const keyDown = (e: any): void => {
+    const keyDown = (e: KeyboardEvent): void => {
       if (
         (e.key === "w" || e.key === "ArrowUp") &&
-        directionRef.current.current !== "down" &&
-        directionRef.current.current !== "up"
+        directionRef.current.new !== "down" &&
+        directionRef.current.new !== "up"
       )
         setDirection({
-          previous: directionRef.current.current,
-          current: "up",
+          current: directionRef.current.new,
+          new: "up",
         });
       else if (
         (e.key === "s" || e.key === "ArrowDown") &&
-        directionRef.current.current !== "up" &&
-        directionRef.current.current !== "down"
+        directionRef.current.new !== "up" &&
+        directionRef.current.new !== "down"
       )
         setDirection({
-          previous: directionRef.current.current,
-          current: "down",
+          current: directionRef.current.new,
+          new: "down",
         });
       else if (
         (e.key === "a" || e.key === "ArrowLeft") &&
-        directionRef.current.current !== "right" &&
-        directionRef.current.current !== "left"
+        directionRef.current.new !== "right" &&
+        directionRef.current.new !== "left"
       )
         setDirection({
-          previous: directionRef.current.current,
-          current: "left",
+          current: directionRef.current.new,
+          new: "left",
         });
       else if (
         (e.key === "d" || e.key === "ArrowRight") &&
-        directionRef.current.current !== "left" &&
-        directionRef.current.current !== "right"
+        directionRef.current.new !== "left" &&
+        directionRef.current.new !== "right"
       )
         setDirection({
-          previous: directionRef.current.current,
-          current: "right",
+          current: directionRef.current.new,
+          new: "right",
         });
     };
     if (gameState !== "playing") {
-      const boardTemp: Array<TCell> = [];
+      const boardTemp: typeof board = [];
 
       for (let i = 0; i < boardCells; i++)
         boardTemp.push({
@@ -147,7 +157,7 @@ const Game = (): JSX.Element => {
 
     snakeTemp.body.unshift(snakeTemp.head);
 
-    switch (directionRef.current.current) {
+    switch (directionRef.current.new) {
       case "up":
         if (snakeTemp.head < boardDimensions.columns)
           return setGameState("over");
@@ -187,7 +197,7 @@ const Game = (): JSX.Element => {
     }
 
     if (snakeTemp.body.length >= snakeTemp.length) {
-      const position: any = snakeTemp.body.pop();
+      const position: number = snakeTemp.body.pop()!;
       boardTemp[position].hasSnake = false;
     }
 
@@ -218,8 +228,8 @@ const Game = (): JSX.Element => {
 
   const restartGame = (gameState2: "waiting" | "playing" | "over"): void => {
     setDirection({
-      previous: null,
-      current: "down",
+      current: null,
+      new: "down",
     });
     setSnake({
       head: 0,
@@ -240,18 +250,20 @@ const Game = (): JSX.Element => {
           <div className="game__board__start">
             <h1 className="game__board__start__title">SNAKE GAME</h1>
             <div className="game__board__start__logo">
-              {Array.from(Array(12), (e, i) => (
+              {Array.from(Array(12), (_, index) => (
                 <div
-                  key={i}
+                  key={index}
                   className={`game__board__start__logo__cell${
-                    i <= 9 ? " game__board__start__logo__cell--dark" : ""
-                  }${i === 11 ? " game__board__start__logo__cell--food" : ""}`}
+                    index <= 9 ? " game__board__start__logo__cell--dark" : ""
+                  }${
+                    index === 11 ? " game__board__start__logo__cell--food" : ""
+                  }`}
                 >
-                  {i === 11 &&
-                    Array.from(Array(9), (e, i) => (
+                  {index === 11 &&
+                    Array.from(Array(9), (_, index) => (
                       <div
-                        className={`${i % 2 !== 0 ? "dark" : ""}`}
-                        key={i}
+                        className={`${index % 2 !== 0 ? "dark" : ""}`}
+                        key={index}
                       ></div>
                     ))}
                 </div>
@@ -274,33 +286,20 @@ const Game = (): JSX.Element => {
         )}
 
         {gameState === "playing" &&
-          board.map(
-            (
-              cell: {
-                id: string;
-                position: number;
-                hasFood: boolean;
-                hasSnake: boolean;
-              },
-              index: any
-            ) => (
-              <div
-                className={`game__board__cell${
-                  cell.hasSnake ? " game__board__cell--snake" : ""
-                } ${cell.hasFood ? " game__board__cell--food" : ""}`}
-                id={cell.id}
-                key={index}
-              >
-                {cell.hasFood &&
-                  Array.from(Array(9), (e, i) => (
-                    <div
-                      className={`${i % 2 !== 0 ? "dark" : ""}`}
-                      key={i}
-                    ></div>
-                  ))}
-              </div>
-            )
-          )}
+          board.map((cell, index) => (
+            <div
+              className={`game__board__cell${
+                cell.hasSnake ? " game__board__cell--snake" : ""
+              } ${cell.hasFood ? " game__board__cell--food" : ""}`}
+              id={cell.id}
+              key={index}
+            >
+              {cell.hasFood &&
+                Array.from(Array(9), (e, i) => (
+                  <div className={`${i % 2 !== 0 ? "dark" : ""}`} key={i}></div>
+                ))}
+            </div>
+          ))}
 
         {gameState === "over" && (
           <div className="game__board__loss">
@@ -321,7 +320,9 @@ const Game = (): JSX.Element => {
                   type="text"
                   maxLength={10}
                   value={value}
-                  onChange={(e: any) => setValue(e.target.value.toUpperCase())}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setValue(e.target.value.toUpperCase())
+                  }
                   className="game__board__loss__submitForm__usernameInput"
                   name="username"
                   required
