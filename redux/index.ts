@@ -1,15 +1,13 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { TPlayer } from "types/index";
-
-type TInitialState = {
+type State = {
   dataFetched: boolean;
   requestType: "day" | "week" | "month" | "all";
   playerBest: number;
-  players: Array<TPlayer>;
+  players: Array<Player>;
 };
 
-const initialState: TInitialState = {
+const initialState: State = {
   dataFetched: false,
   requestType: "all",
   playerBest: 0,
@@ -28,7 +26,7 @@ const rootSlice = createSlice({
       state,
       action: PayloadAction<"day" | "week" | "month" | "all">
     ) => void (state.requestType = action.payload),
-    setPlayers: (state, action: PayloadAction<Array<TPlayer>>) =>
+    setPlayers: (state, action: PayloadAction<Array<Player>>) =>
       void (state.players = action.payload),
   },
 });
@@ -38,6 +36,6 @@ export const { setDataFetched, setPlayerBest, setRequestType, setPlayers } =
 
 const store = configureStore({ reducer: rootSlice.reducer });
 
-export type RootState = TInitialState;
+export type RootState = State;
 
 export default store;

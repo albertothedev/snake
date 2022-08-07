@@ -9,7 +9,6 @@ import {
   RootState,
   setPlayers,
 } from "../redux";
-import { TPlayer } from "types/index";
 
 const Leaderboard = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -36,7 +35,7 @@ const Leaderboard = (): JSX.Element => {
         dispatch(setPlayerBest(Number(localStorage.getItem("playerBest"))));
 
       axios
-        .get(`/api/getPlayers`)
+        .get<Array<Player>>(`/api/getPlayers`)
         .then((res) => {
           dispatch(setPlayers(res.data));
           dispatch(setDataFetched(true));
@@ -104,12 +103,12 @@ const Leaderboard = (): JSX.Element => {
         <div className="leaderboard__rankings__players">
           {dataFetched ? (
             players
-              .filter((player: TPlayer) =>
+              .filter((player) =>
                 requestType === "all"
                   ? player
                   : player.date >= sortType[requestType]
               )
-              .map((player: TPlayer, index: number) => (
+              .map((player, index) => (
                 <div
                   className="leaderboard__rankings__players__player"
                   key={index}
