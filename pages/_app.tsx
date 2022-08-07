@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import Head from "next/head";
 
 import "styles/main.scss";
-import store from "../redux";
+import store from "redux/index";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
