@@ -8,14 +8,11 @@ export default function getPlayers(
   req: NextApiRequest,
   res: NextApiResponse<Array<Player>>
 ) {
-  let players: Array<Player> = [];
-
   playersRef
     .orderBy("score", "desc")
     .get()
-    .then((snapshot) => {
-      snapshot.forEach((doc: any) => players.push(doc.data()));
-      res.send(players);
-    })
+    .then((snapshot) =>
+      res.send(snapshot.docs.map((doc) => doc.data() as Player))
+    )
     .catch((err) => console.error(`Error getting document: ${err}`));
 }
