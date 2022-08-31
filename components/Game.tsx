@@ -353,6 +353,7 @@ const Game = (): JSX.Element => {
                 onClick={() => restartGame("playing")}
                 onMouseOver={() => setRestartBlinking(false)}
                 onMouseOut={() => setRestartBlinking(true)}
+                type="button"
               >
                 PLAY AGAIN
               </button>
