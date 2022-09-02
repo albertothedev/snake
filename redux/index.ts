@@ -5,6 +5,8 @@ type State = {
   requestType: "day" | "week" | "month" | "all";
   playerBest: number;
   players: Array<Player>;
+  gameState: "waiting" | "playing" | "over";
+  score: number;
 };
 
 const initialState: State = {
@@ -12,6 +14,8 @@ const initialState: State = {
   requestType: "all",
   playerBest: 0,
   players: [],
+  gameState: "waiting",
+  score: 0,
 };
 
 const rootSlice = createSlice({
@@ -26,11 +30,21 @@ const rootSlice = createSlice({
       void (state.requestType = action.payload),
     setPlayers: (state, action: PayloadAction<State["players"]>) =>
       void (state.players = action.payload),
+    setGameState: (state, action: PayloadAction<State["gameState"]>) =>
+      void (state.gameState = action.payload),
+    setScore: (state, action: PayloadAction<State["score"]>) =>
+      void (state.score = action.payload),
   },
 });
 
-export const { setDataFetched, setPlayerBest, setRequestType, setPlayers } =
-  rootSlice.actions;
+export const {
+  setDataFetched,
+  setPlayerBest,
+  setRequestType,
+  setPlayers,
+  setGameState,
+  setScore,
+} = rootSlice.actions;
 
 const store = configureStore({ reducer: rootSlice.reducer });
 
