@@ -18,15 +18,13 @@ const rootSlice = createSlice({
   name: "rootSlice",
   initialState,
   reducers: {
-    setDataFetched: (state, action: PayloadAction<boolean>) =>
+    setDataFetched: (state, action: PayloadAction<State["dataFetched"]>) =>
       void (state.dataFetched = action.payload),
-    setPlayerBest: (state, action: PayloadAction<number>) =>
+    setPlayerBest: (state, action: PayloadAction<State["playerBest"]>) =>
       void (state.playerBest = action.payload),
-    setRequestType: (
-      state,
-      action: PayloadAction<"day" | "week" | "month" | "all">
-    ) => void (state.requestType = action.payload),
-    setPlayers: (state, action: PayloadAction<Array<Player>>) =>
+    setRequestType: (state, action: PayloadAction<State["requestType"]>) =>
+      void (state.requestType = action.payload),
+    setPlayers: (state, action: PayloadAction<State["players"]>) =>
       void (state.players = action.payload),
   },
 });
