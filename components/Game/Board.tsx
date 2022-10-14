@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import useInterval from "utils/useInterval";
 import { setGameState, setPlayerBest, setScore } from "redux/index";
 
-const gameSpeed: number = 150;
-const boardCells: number = 1000;
+const gameSpeed = 150;
+const boardCells = 1000;
 
 const generateBoard = () => {
   const board = [];
@@ -116,8 +116,8 @@ export default function Board() {
   }, gameSpeed);
 
   const moveSnake = (): void => {
-    let snakeTemp = { ...snake };
-    let boardTemp = [...board];
+    const snakeTemp = { ...snake };
+    const boardTemp = [...board];
 
     snakeTemp.body.unshift(snakeTemp.head);
 
@@ -161,7 +161,7 @@ export default function Board() {
     }
 
     if (snakeTemp.body.length >= snakeTemp.length) {
-      const position: number = snakeTemp.body.pop()!;
+      const position: number = snakeTemp.body.pop() as number;
       boardTemp[position].hasSnake = false;
     }
 
