@@ -86,7 +86,9 @@ export default function Loss() {
                 : ""
             }`}
             onMouseOver={() => setSubmitBlinking(false)}
+            onFocus={() => setSubmitBlinking(false)}
             onMouseOut={() => setSubmitBlinking(true)}
+            onBlur={() => setSubmitBlinking(true)}
           >
             SUBMIT
           </button>
@@ -100,7 +102,9 @@ export default function Loss() {
           }`}
           onClick={() => dispatch(setGameState("playing"))}
           onMouseOver={() => setRestartBlinking(false)}
+          onFocus={() => setRestartBlinking(false)}
           onMouseOut={() => setRestartBlinking(true)}
+          onBlur={() => setRestartBlinking(true)}
           type="button"
         >
           PLAY AGAIN

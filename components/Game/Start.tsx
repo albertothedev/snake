@@ -38,7 +38,9 @@ export default function Start() {
         }`}
         onClick={() => dispatch(setGameState("playing"))}
         onMouseOver={() => setBlinking(false)}
+        onFocus={() => setBlinking(false)}
         onMouseOut={() => setBlinking(true)}
+        onBlur={() => setBlinking(true)}
       >
         START
       </button>
