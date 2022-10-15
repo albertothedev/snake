@@ -1,6 +1,10 @@
 import type { AppProps } from "next/app";
 import React from "react";
-import "normalize.css";
+import "sanitize.css";
+import "sanitize.css/forms.css";
+import "sanitize.css/assets.css";
+import "sanitize.css/typography.css";
+import "sanitize.css/reduce-motion.css";
 import { Provider } from "react-redux";
 import Head from "next/head";
 
