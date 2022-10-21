@@ -1,6 +1,6 @@
 *,
-*:before,
-*:after {
+*::before,
+*::after {
   box-sizing: border-box;
   outline: 1px solid transparent;
 }
@@ -10,18 +10,19 @@
 }
 
 *::-webkit-scrollbar-track {
-  background: $backgroundColor !important;
+  background: $background-color !important;
 }
 
 *::-webkit-scrollbar-thumb {
-  background: $drawingColor !important;
+  background: $drawing-color !important;
 }
+
 html {
   line-height: 1.2;
 
   body {
-    background-color: $backgroundColor;
-    color: $drawingColor;
+    background-color: $background-color;
+    color: $drawing-color;
     height: 100vh;
 
     .app {

@@ -8,7 +8,7 @@
   &__board {
     box-sizing: content-box;
     aspect-ratio: 8 / 5;
-    border: 3em solid $drawingColor;
+    border: 3em solid $drawing-color;
     text-align: center;
 
     &__start {
@@ -35,7 +35,7 @@
           height: 100%;
 
           &--dark {
-            background-color: $drawingColor;
+            background-color: $drawing-color;
           }
 
           &--food {
@@ -62,7 +62,7 @@
         background-color: transparent;
         cursor: pointer;
         position: relative;
-        color: $drawingColor;
+        color: $drawing-color;
         font-size: 3em;
 
         &:hover {
@@ -91,7 +91,7 @@
       float: left;
 
       &--snake {
-        background-color: $drawingColor;
+        background-color: $drawing-color;
       }
 
       &--food {
@@ -131,7 +131,7 @@
           padding: 0;
           background-color: transparent;
           text-align: center;
-          border-bottom: 0.2em $drawingColor solid;
+          border-bottom: 0.2em $drawing-color solid;
           font-size: 2em;
           width: 15em;
           margin-bottom: 1em;
@@ -143,7 +143,7 @@
           background-color: transparent;
           cursor: pointer;
           position: relative;
-          color: $drawingColor;
+          color: $drawing-color;
           display: block;
           margin: auto;
           font-size: 3em;
